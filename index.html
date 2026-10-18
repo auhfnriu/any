@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080f17">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23080f17'/%3E%3Cpath d='M20 5v30M5 20h30M9 9l22 22M9 31l22-22' stroke='%23e6c48c'/%3E%3Ccircle cx='20' cy='20' r='4' fill='%23e6c48c'/%3E%3C/svg%3E">
+<meta name="description" content="흐르는 빛을 한 올씩. 손끝으로 별과 음악을 엮는 작은 밤의 직조실.">
+<title>밤의 직조실 · Night Loom</title>
+<style>
+:root{color-scheme:dark;--ink:#080f17;--paper:#e8e9dd;--muted:#8faaa9;--gold:#e6c48c;--line:rgba(190,216,211,.17);--panel:rgba(12,24,31,.85)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{background:var(--ink);color:var(--paper);font-family:"Segoe UI","Malgun Gothic",sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}button,input{font:inherit}button{color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{cursor:default;opacity:.36}button:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid var(--gold);outline-offset:5px}button{border:0;background:none}svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}.icon-defs{display:none}#sky{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;outline-offset:-7px}#sky:focus-visible{outline:1px solid rgba(230,196,140,.5)}
+.topbar{position:absolute;z-index:2;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:28px 38px;pointer-events:none}.brand{display:flex;align-items:center;gap:14px}.brand-mark{color:var(--gold);width:36px;height:36px;stroke-width:1}.brand-name{font-size:16px;letter-spacing:.16em;font-weight:500}.brand-sub{font-size:9px;letter-spacing:.32em;color:var(--muted);margin-top:6px}.top-actions{display:flex;gap:10px;align-items:center;pointer-events:auto}.round-button{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:rgba(10,20,28,.55);transition:background .2s,border-color .2s}.round-button:hover{background:#213238;border-color:#63817d}.sound{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:24px;padding:10px 15px;min-height:40px;background:rgba(10,20,28,.55);font-size:11px;letter-spacing:.04em}.sound[aria-pressed=true]{color:var(--gold);border-color:#6a634c}.sound svg{width:16px;height:16px}.hero{position:absolute;top:21%;left:5.3%;pointer-events:none;z-index:1}.eyebrow{color:var(--gold);font-size:10px;letter-spacing:.25em;display:flex;align-items:center;gap:12px}.eyebrow:before{content:"";display:block;width:24px;height:1px;background:var(--gold);opacity:.65}h1{font-family:Georgia,"Batang","Noto Serif CJK KR",serif;font-weight:400;font-size:clamp(32px,3.55vw,52px);line-height:1.65;letter-spacing:-.045em;margin:20px 0 16px}.hero p{color:var(--muted);font-size:12px;line-height:2.05;letter-spacing:.015em;margin:0}.hero .small-rule{width:29px;height:1px;background:var(--line);margin:28px 0 16px}.edition{font-size:9px;letter-spacing:.2em;color:#6d8d8d;font-family:Consolas,monospace}
+.coordinate{position:absolute;right:38px;top:120px;color:#71918f;font-family:Consolas,monospace;font-size:9px;letter-spacing:.18em;writing-mode:vertical-rl;pointer-events:none}.scene-caption{position:absolute;left:52%;top:21%;font-size:9px;letter-spacing:.3em;color:#72928e;pointer-events:none}.scene-caption:before{content:"+";margin-right:12px;color:var(--gold)}.guest-card{position:absolute;right:3.4%;bottom:173px;width:206px;padding:18px 0 0 18px;border-left:1px solid var(--line);pointer-events:none}.guest-label{font-size:9px;letter-spacing:.2em;color:var(--muted);display:flex;align-items:center;justify-content:space-between}.guest-count{color:var(--gold);font-family:Consolas,monospace;letter-spacing:.12em}.guest-card p{font-size:11px;line-height:1.9;color:#a0b6b1;margin:12px 0}.guest-track{display:flex;gap:6px;margin-top:16px}.guest-track i{display:block;width:26px;height:2px;background:#243b3e;transition:background .7s,box-shadow .7s}.guest-track i.lit{background:var(--gold);box-shadow:0 0 10px #e6c48c66}.guest-call{pointer-events:auto;padding:8px 0;font-size:10px;color:var(--gold);border-bottom:1px solid #e6c48c44;display:none}.guest-card.unlocked .guest-call{display:block}.guest-card.unlocked .guest-track{display:none}
+.bottom{position:absolute;bottom:29px;left:36px;right:36px;display:flex;align-items:flex-end;justify-content:space-between;gap:22px;pointer-events:none;z-index:2}.status{width:150px;flex-shrink:0;padding-bottom:7px}.status-title{font-size:10px;color:#8ba8a4;letter-spacing:.09em;display:flex;gap:8px;align-items:center}.status-dot{width:4px;height:4px;border-radius:50%;background:#a3c8b3;box-shadow:0 0 8px #a3c8b3}.status-dot.still{background:var(--gold);box-shadow:none}.status-numbers{font-family:Consolas,monospace;font-size:10px;color:#6c8c8b;letter-spacing:.06em;margin-top:13px}.toolbar-wrap{display:flex;flex-direction:column;align-items:center;gap:13px;pointer-events:auto}.draw-hint{font-size:10px;color:#7b9996;letter-spacing:.035em;pointer-events:none;text-align:center}.toolbar{display:flex;align-items:center;gap:5px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:8px;box-shadow:0 12px 44px #0005;backdrop-filter:blur(18px)}.thread-picker{display:flex;gap:4px}.thread{position:relative;display:flex;align-items:center;gap:8px;padding:12px 13px;font-size:11px;white-space:nowrap;border:1px solid transparent;border-radius:11px;color:#94adaa;transition:background .2s,color .2s}.thread:hover{background:#ffffff08}.thread[aria-pressed=true]{background:#ffffff08;border-color:#ffffff1d;color:var(--paper)}.swatch{width:10px;height:10px;border-radius:50%;background:var(--color);box-shadow:0 0 10px color-mix(in srgb,var(--color),transparent 65%)}.key{font:9px Consolas,monospace;color:#698580;margin-left:1px}.divider{width:1px;height:25px;background:var(--line);margin:0 7px}.tool{width:39px;height:41px;border-radius:10px;display:grid;place-items:center;color:#aac0ba}.tool:hover{background:#ffffff0a;color:var(--paper)}.tool svg{width:17px;height:17px}.save{pointer-events:auto;padding:13px 16px;border:1px solid #8e967957;border-radius:9px;display:flex;align-items:center;gap:11px;color:var(--gold);font-size:11px;margin-bottom:5px;white-space:nowrap;background:#0b191dcc}.save:hover{background:#263130}.save svg{width:16px;height:16px}.toast{position:absolute;z-index:4;bottom:151px;left:50%;transform:translate(-50%,8px);opacity:0;padding:12px 20px;border:1px solid var(--line);border-radius:30px;background:#102028e8;color:#c3d5cc;font-size:12px;transition:opacity .3s,transform .3s;pointer-events:none;text-align:center;max-width:calc(100% - 36px);width:max-content;line-height:1.7}.toast.visible{opacity:1;transform:translate(-50%,0)}
+dialog{color:var(--paper);background:#101e26;border:1px solid #42605b;border-radius:18px;max-width:480px;width:calc(100% - 36px);padding:34px;box-shadow:0 30px 120px #0009;max-height:calc(100dvh - 40px);overflow:auto}dialog::backdrop{background:#02070baf;backdrop-filter:blur(7px)}.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.dialog-top .eyebrow{font-size:9px}dialog h2{font-family:Georgia,"Batang",serif;font-size:28px;font-weight:400;margin:20px 0 12px}dialog p{font-size:12px;line-height:1.9;color:#a6bcb7}.guide{margin:23px 0 26px;display:grid;gap:17px}.guide-row{display:flex;align-items:flex-start;gap:16px}.guide-no{color:var(--gold);font:11px Consolas,monospace;margin-top:3px}.guide strong{font-size:12px;font-weight:500}.guide p{margin:5px 0 0;font-size:11px}.shortcut-list{padding-top:18px;border-top:1px solid var(--line);font-size:10px;color:#8eaaa4;line-height:2.2}kbd{font:10px Consolas,monospace;border:1px solid #3c5350;border-radius:4px;padding:2px 5px;color:#d1ddd2;margin-right:3px}.dialog-footer{font-size:10px!important;color:#6c908b!important;margin:18px 0 0!important}.begin{display:block;width:100%;margin-top:24px;border:1px solid #a8a67b70;padding:13px;border-radius:8px;color:var(--gold);background:#d4c48b08}.noscript{position:absolute;inset:20%;background:#102028;padding:40px;z-index:10;line-height:2}.download-note{color:#8ca6a0}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1600px){.hero{left:6%}.guest-card{right:5%}.topbar{padding:36px 50px}.bottom{left:50px;right:50px;bottom:36px}}
+@media(max-width:1050px){.hero{left:5%;top:20%}h1{font-size:35px}.hero p{font-size:11px}.guest-card{width:165px;right:28px;bottom:172px}.status{width:100px}.thread{padding:12px 9px}.key{display:none}.bottom{gap:12px;left:26px;right:26px}.save{padding:13px 12px}.scene-caption{left:53%}}
+@media(max-width:760px){.topbar{padding:20px}.brand{gap:10px}.brand-name{font-size:13px}.brand-sub{font-size:8px}.brand-mark{width:30px;height:30px}.sound{padding:10px}.sound-label{display:none}.top-actions{gap:7px}.hero{top:117px;left:25px}.eyebrow{font-size:8px}h1{font-size:30px;line-height:1.5;margin:13px 0 12px}.hero p{font-size:10px;line-height:1.9}.small-rule,.edition,.coordinate,.scene-caption{display:none}.guest-card{right:24px;bottom:183px;width:152px;padding:0 0 0 12px}.guest-card p{font-size:10px;margin:8px 0}.guest-label{font-size:8px}.guest-track{margin-top:10px}.bottom{left:15px;right:15px;bottom:max(18px,env(safe-area-inset-bottom));flex-wrap:wrap;gap:13px}.toolbar-wrap{width:100%;order:3;gap:10px}.toolbar{width:100%;max-width:450px;justify-content:center;padding:6px;border-radius:14px}.thread{padding:10px 12px}.tool{width:36px;height:37px}.divider{margin:0 4px}.status{width:auto;display:flex;gap:14px;align-items:center;padding:0}.status-title{font-size:9px}.status-numbers{margin:0;font-size:9px}.save{padding:9px 10px;font-size:10px;margin:0}.draw-hint{font-size:9px}.toast{bottom:190px;font-size:11px}.guest-call{font-size:9px}.hero .eyebrow:before{width:16px}.topbar .round-button{width:36px;height:36px}.sound{min-height:36px}.guest-card.unlocked p{max-width:135px}}
+@media(max-width:380px){.thread{padding:10px 8px;gap:6px}.tool{width:30px}.divider{margin:0 2px}.brand-sub{letter-spacing:.2em}.status{gap:7px}.guest-card{width:140px;right:20px}.hero{left:20px}h1{font-size:26px}}
+@media(max-height:580px) and (min-width:761px){.topbar{padding:15px 28px}.hero{top:100px}.hero h1{font-size:30px;margin:10px 0}.hero .small-rule,.hero .edition,.hero p,.guest-card{display:none}.bottom{bottom:20px}.coordinate{top:90px}.toast{bottom:130px}}
+@media(max-height:560px) and (min-width:500px) and (max-width:760px){.topbar{padding:12px 20px}.hero{top:80px}.hero h1{font-size:24px}.hero p,.hero .eyebrow,.guest-card,.status,.draw-hint{display:none}.bottom{bottom:12px;flex-wrap:nowrap;align-items:center}.toolbar-wrap{width:auto;flex:1}.toolbar{max-width:none}.save{order:4}.toast{bottom:80px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+</style>
+</head>
+<body>
+<svg class="icon-defs" aria-hidden="true"><defs>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4zM15 8c3 2 3 6 0 8m3-11c5 4 5 10 0 14"/></symbol>
+<symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4zM16 9l5 6m0-6-5 6"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><path d="M9 8a3 3 0 1 1 4 3c-1 .5-1 1-1 3"/><path d="M12 18h.01"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24"><path d="m9 5-5 5 5 5M5 10h9a6 6 0 0 1 0 12" transform="translate(0 -2)"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="3"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 11 8-11 8z"/></symbol>
+<symbol id="i-new" viewBox="0 0 24 24"><path d="m12 2 2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+</defs></svg>
+<canvas id="sky" tabindex="0" aria-label="밤을 엮는 캔버스. 드래그해서 빛의 실을 그리세요. 키보드는 방향키로 위치를 옮기고 Enter로 실을 엮습니다." aria-describedby="keyboard-help"></canvas>
+<header class="topbar">
+ <div class="brand"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2v36M2 20h36M7 7l26 26M7 33l26-26"/><ellipse cx="20" cy="20" rx="8" ry="17" transform="rotate(45 20 20)"/><circle cx="20" cy="20" r="4" fill="#e6c48c" stroke="none"/></svg><div><div class="brand-name">밤의 직조실</div><div class="brand-sub">THE NIGHT LOOM</div></div></div>
+ <div class="top-actions"><button class="sound" id="sound" aria-pressed="false" aria-label="소리 켜기" title="소리 켜기 · M"><svg aria-hidden="true"><use href="#i-mute"/></svg><span class="sound-label">소리 켜기</span></button><button class="round-button" id="help" aria-label="사용 방법" title="사용 방법 · H"><svg aria-hidden="true"><use href="#i-help"/></svg></button></div>
+</header>
+<section class="hero" aria-label="작품 소개"><div class="eyebrow">A LITTLE WONDER OF NIGHT</div><h1>흐르는 빛을<br>한 올씩.</h1><p>서두르지 않아도 괜찮아요.<br>당신의 손끝에서, 별이 머물 자리가 생깁니다.</p><div class="small-rule"></div><div class="edition">AN EXPERIMENT IN SLOWNESS · 001</div></section>
+<div class="coordinate" aria-hidden="true">NO DESTINATION. JUST CONSTELLATIONS.</div><div class="scene-caption" aria-hidden="true">DRAW A LITTLE INFINITY</div>
+<aside class="guest-card" id="guest-card"><div class="guest-label">밤의 작은 비밀 <span class="guest-count" id="guest-count">0 / 3</span></div><p id="guest-message">세 가닥을 엮으면,<br>먼 곳의 손님이 찾아옵니다.</p><div class="guest-track" aria-hidden="true"><i></i><i></i><i></i></div><button class="guest-call" id="guest-call">손님 다시 부르기 ↗</button></aside>
+<div class="bottom">
+ <div class="status"><div class="status-title"><i class="status-dot" id="status-dot"></i><span id="status-text">밤이 흐르는 중</span></div><div class="status-numbers"><span id="thread-count">02</span> 가닥 · <span id="note-count">00</span> 별</div></div>
+ <div class="toolbar-wrap"><div class="draw-hint" id="draw-hint">드래그해서 빛을 엮어보세요. 정해진 모양은 없어요.</div><div class="toolbar" role="toolbar" aria-label="직조 도구">
+  <div class="thread-picker" role="group" aria-label="실 선택"><button class="thread" data-color="0" aria-pressed="true" title="달빛 · 1" style="--color:#8bd5cd"><i class="swatch" aria-hidden="true"></i>달빛<span class="key">1</span></button><button class="thread" data-color="1" aria-pressed="false" title="노을 · 2" style="--color:#edc58c"><i class="swatch" aria-hidden="true"></i>노을<span class="key">2</span></button><button class="thread" data-color="2" aria-pressed="false" title="꿈결 · 3" style="--color:#bea9e6"><i class="swatch" aria-hidden="true"></i>꿈결<span class="key">3</span></button></div>
+  <div class="divider" aria-hidden="true"></div><button class="tool" id="undo" disabled aria-label="되돌리기" title="되돌리기 · Ctrl+Z"><svg aria-hidden="true"><use href="#i-undo"/></svg></button><button class="tool" id="pause" aria-label="밤 멈추기" aria-pressed="false" title="멈춤 / 재생 · Space"><svg aria-hidden="true"><use href="#i-pause"/></svg></button><button class="tool" id="new" aria-label="새로운 밤" title="새로운 밤 · 되돌릴 수 있어요"><svg aria-hidden="true"><use href="#i-new"/></svg></button>
+ </div></div>
+ <button class="save" id="save"><svg aria-hidden="true"><use href="#i-save"/></svg>이 밤 간직하기</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<p id="keyboard-help" class="sr-only">캔버스에 초점을 맞추고 방향키로 위치 이동, Enter로 실 만들기. 1, 2, 3으로 실 선택. M으로 소리, Space로 멈춤, Ctrl+Z로 되돌리기, H로 도움말.</p>
+<dialog id="guide" aria-labelledby="guide-title">
+ <div class="dialog-top"><div class="eyebrow">A SMALL FIELD GUIDE</div><button class="round-button" id="close-help" aria-label="도움말 닫기"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+ <h2 id="guide-title">밤을 엮는 방법</h2><p>잘 그려야 할 필요도, 완성해야 할 모양도 없어요.<br>잠시 머물며 빛이 지나가는 길을 만들어보세요.</p>
+ <div class="guide"><div class="guide-row"><span class="guide-no">01</span><div><strong>실을 고르고, 천천히 그어보세요.</strong><p>마우스나 손가락으로 그린 선 위에 별이 맺히고,<br>작은 빛들이 그 길을 따라 여행해요.</p></div></div><div class="guide-row"><span class="guide-no">02</span><div><strong>소리를 켜면, 당신의 그림이 악보가 됩니다.</strong><p>달빛은 맑게, 노을은 따뜻하게, 꿈결은 부드럽게.<br>높은 곳의 별일수록 높은 음으로 노래해요.</p></div></div><div class="guide-row"><span class="guide-no">03</span><div><strong>세 가닥을 엮고, 조금 기다려보세요.</strong><p>누군가 당신의 밤을 바다로 착각할지도 몰라요.<br>빈 곳을 톡 누르면 작은 빛도 피어납니다.</p></div></div></div>
+ <div class="shortcut-list"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> 실 선택　<kbd>M</kbd> 소리　<kbd>Space</kbd> 멈춤<br><kbd>Ctrl Z</kbd> 되돌리기　<kbd>H</kbd> 도움말　<kbd>Esc</kbd> 닫기<br>캔버스에서 <kbd>← ↑ ↓ →</kbd> 위치 이동 · <kbd>Enter</kbd> 실 엮기</div>
+ <p class="dialog-footer">최대 24가닥 · 이 브라우저에 자동 보관 · 「이 밤 간직하기」로 PNG 저장<br>인터넷, 계정, 설치 없이 이 파일 하나로 작동합니다.</p><button class="begin" id="begin">다시, 밤으로</button>
+</dialog>
+<noscript><div class="noscript">이 작품은 JavaScript로 움직입니다. Microsoft Edge 또는 Chrome에서 JavaScript를 허용한 뒤 이 파일을 다시 열어주세요.</div></noscript>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const canvas = $('sky'), ctx = canvas.getContext('2d');
+const TAU = Math.PI * 2, STORE = 'night-loom-v1';
+const colors = ['#8bd5cd','#edc58c','#bea9e6'];
+const palettes = [[62,65,69,72,74,77,81,84],[57,60,62,65,69,72,74,77],[50,57,60,62,65,69,72,74]];
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W=innerWidth,H=innerHeight,DPR=1,bg,stars=[],dust=[],threads=[],history=[];
+let seed=(Math.random()*0xffffffff)>>>0, selected=0, made=0, paused=reduceMotion;
+let time=0,last=0,drawing=null,pointer={x:0,y:0,active:false},keyCursor=null;
+let sparks=[],rings=[],visitor=null,visitorSeen=false,toastTimer,saveTimer,notesThisFrame=0;
+let audio=null,audioOn=false,master,delay,feedback,wet,compressor,reverb,lastNote=0;
+let storageOK=true;
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function rgba(hex,a){const n=parseInt(hex.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`}
+function toast(message){$('toast').textContent=message;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),4000)}
+function snapshot(){return {v:1,seed,selected,made,visitorSeen,threads:threads.map(t=>({points:t.raw,color:t.color,phase:t.phase}))}}
+function remember(){history.push(snapshot());if(history.length>30)history.shift();$('undo').disabled=false}
+function persist(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(STORE,JSON.stringify(snapshot()))}catch{if(storageOK){storageOK=false;toast('자동 보관을 사용할 수 없어요. 「이 밤 간직하기」로 저장해 주세요.')}}},250)}
+function validState(s){return s&&s.v===1&&Number.isInteger(s.seed)&&s.seed>=0&&s.seed<=0xffffffff&&Number.isInteger(s.made)&&s.made>=0&&s.made<=1000000&&Number.isInteger(s.selected)&&s.selected>=0&&s.selected<3&&typeof s.visitorSeen==='boolean'&&Array.isArray(s.threads)&&s.threads.length<=24&&s.threads.every(t=>Number.isInteger(t.color)&&t.color>=0&&t.color<3&&Number.isFinite(t.phase)&&t.phase>=0&&t.phase<=1&&Array.isArray(t.points)&&t.points.length>=2&&t.points.length<=300&&t.points.every(p=>Array.isArray(p)&&p.length===2&&p.every(n=>Number.isFinite(n)&&n>=0&&n<=1)))}
+function restore(s){seed=s.seed;selected=s.selected;made=s.made;visitorSeen=s.visitorSeen;threads=s.threads.map(t=>makeThread(t.points,t.color,t.phase));visitor=null;sparks=[];rings=[];buildBackground();updateUI()}
+function updateUI(){
+ $('thread-count').textContent=String(threads.length).padStart(2,'0');$('note-count').textContent=String(threads.reduce((a,t)=>a+t.notes.length,0)).padStart(2,'0');
+ document.querySelectorAll('.thread').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.color===selected)));
+ $('guest-count').textContent=made>=3?'✦':`${made} / 3`;
+ document.querySelectorAll('.guest-track i').forEach((e,i)=>e.classList.toggle('lit',i<made));
+ $('guest-card').classList.toggle('unlocked',made>=3);
+ $('guest-message').innerHTML=made>=3?'어떤 밤은 누군가의<br>바다가 되기도 합니다.':'세 가닥을 엮으면,<br>먼 곳의 손님이 찾아옵니다.';
+ $('pause').setAttribute('aria-pressed',String(paused));$('pause').setAttribute('aria-label',paused?'밤 다시 흐르게 하기':'밤 멈추기');$('pause').querySelector('use').setAttribute('href',paused?'#i-play':'#i-pause');
+ $('status-text').textContent=paused?'잠시 멈춘 밤':'밤이 흐르는 중';$('status-dot').classList.toggle('still',paused);$('undo').disabled=history.length===0;
+}
+function selectColor(i){selected=i;updateUI();persist()}
+function buildBackground(){
+ if(!W||!H)return;
+ bg=document.createElement('canvas');bg.width=Math.round(W*DPR);bg.height=Math.round(H*DPR);const b=bg.getContext('2d');b.scale(DPR,DPR);
+ const g=b.createLinearGradient(0,0,W,H);g.addColorStop(0,'#080f19');g.addColorStop(.5,'#0a1922');g.addColorStop(1,'#081519');b.fillStyle=g;b.fillRect(0,0,W,H);
+ const neb=(x,y,r,c)=>{const g=b.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,'transparent');b.fillStyle=g;b.fillRect(0,0,W,H)};
+ neb(W*.58,H*.48,W*.48,'#26535336');neb(W*.8,H*.27,W*.28,'#3e384e25');neb(W*.6,H*.77,W*.38,'#74734a11');
+ const r=rng(seed);stars=[];dust=[];
+ for(let i=0;i<170;i++)stars.push({x:r()*W,y:r()*H,s:.3+r()*.9,a:.13+r()*.4,p:r()*TAU});
+ for(let i=0;i<38;i++)dust.push({x:r()*W,y:r()*H,r:.5+r()*1.2,p:r()*TAU,s:.6+r()*.7});
+ for(let i=0;i<8500;i++){b.fillStyle=`rgba(145,180,171,${r()*.035})`;b.fillRect(r()*W,r()*H,1,1)}
+ b.strokeStyle='#98c6bb06';b.lineWidth=1;
+ for(let i=0;i<9;i++){b.beginPath();b.ellipse(W*.58,H*.52,W*(.18+i*.042),H*(.2+i*.036),-.18,0,TAU);b.stroke()}
+ b.setLineDash([1,8]);b.strokeStyle='#a7c1b011';b.beginPath();b.ellipse(W*.59,H*.53,W*.3,H*.32,-.18,0,TAU);b.stroke();b.setLineDash([]);
+}
+function resize(){W=innerWidth;H=innerHeight;DPR=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(W*DPR);canvas.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);buildBackground();for(const t of threads)measure(t)}
+// Catmull–Rom curves preserve the hand-drawn gesture, with equal-distance stars.
+function smooth(raw){const out=[];for(let i=0;i<raw.length-1;i++){const a=raw[Math.max(0,i-1)],b=raw[i],c=raw[i+1],d=raw[Math.min(raw.length-1,i+2)];for(let j=0;j<6;j++){const t=j/6,t2=t*t,t3=t2*t;out.push([0,1].map(k=>clamp(.5*((2*b[k])+(-a[k]+c[k])*t+(2*a[k]-5*b[k]+4*c[k]-d[k])*t2+(-a[k]+3*b[k]-3*c[k]+d[k])*t3),0,1)))}}out.push([...raw.at(-1)]);return out}
+function makeThread(raw,color,phase=Math.random()) {const t={raw:raw.map(p=>[...p]),color,phase,points:smooth(raw),lengths:[],length:0,notes:[],travel:phase,prevNote:-1,glows:[]};measure(t);return t}
+function measure(t){t.lengths=[0];let total=0;for(let i=1;i<t.points.length;i++){total+=Math.hypot((t.points[i][0]-t.points[i-1][0])*W,(t.points[i][1]-t.points[i-1][1])*H);t.lengths.push(total)}t.length=Math.max(total,1);const count=clamp(Math.round(t.length/75)+1,3,12);t.notes=Array.from({length:count},(_,i)=>i/(count-1));t.glows=t.notes.map(()=>0);t.prevNote=-1}
+function pointAt(t,f){const dist=clamp(f,0,1)*t.length;let lo=0,hi=t.lengths.length-1;while(lo<hi){const m=(lo+hi)>>1;if(t.lengths[m]<dist)lo=m+1;else hi=m}const i=Math.max(1,lo),a=t.points[i-1],b=t.points[i];const u=clamp((dist-t.lengths[i-1])/(t.lengths[i]-t.lengths[i-1]||1),0,1);return {x:(a[0]+(b[0]-a[0])*u)*W,y:(a[1]+(b[1]-a[1])*u)*H}}
+function wobble(p,t,f){if(reduceMotion)return p;const v=Math.sin(f*Math.PI);return{x:p.x+Math.sin(time*.4+t.phase*TAU+f*5)*2*v,y:p.y+Math.sin(time*.55+t.phase*TAU+f*8)*3*v}}
+function seedThreads(){
+ const portrait=W<760;
+ const a=portrait?[[.19,.48],[.3,.4],[.51,.4],[.72,.47],[.74,.56],[.59,.62],[.38,.59],[.25,.53]]:[[.31,.51],[.4,.34],[.56,.32],[.72,.42],[.79,.57],[.68,.66],[.51,.65],[.42,.58]];
+ const b=portrait?[[.23,.59],[.36,.53],[.58,.48],[.78,.43],[.86,.37]]:[[.36,.65],[.47,.56],[.61,.52],[.74,.4],[.82,.31]];
+ threads=[makeThread(a,0,.19),makeThread(b,1,.61)];
+}
+function simplify(points){const result=[points[0]];for(let i=1;i<points.length-1;i++){const a=result.at(-1),b=points[i];if(Math.hypot((b[0]-a[0])*W,(b[1]-a[1])*H)>12)result.push(b)}result.push(points.at(-1));if(result.length>160)return result.filter((_,i)=>i%Math.ceil(result.length/150)===0||i===result.length-1);return result}
+function addThread(points){
+ if(threads.length>=24){toast('이 밤에는 24가닥까지 머물 수 있어요. 되돌리거나 새로운 밤을 펼쳐보세요.');return}
+ remember();const t=makeThread(simplify(points),selected,0);threads.push(t);made++;bloom(t.raw[0][0]*W,t.raw[0][1]*H,colors[selected],12);updateUI();persist();
+ if(made===1){$('draw-hint').textContent='빛이 별을 지날 때마다, 당신의 그림이 노래합니다.';toast('첫 번째 실이 밤에 머물렀어요. 소리를 켜고 들어보세요.')}
+ if(made===3){callVisitor();if(!paused)toast('쉿, 당신의 밤을 찾아온 손님이 있어요.')}
+}
+function bloom(x,y,color,n=18){rings.push({x,y,color,age:0});for(let i=0;i<n;i++){const a=Math.random()*TAU,s=10+Math.random()*45;sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,color,life:1.2+Math.random(),age:0})}if(sparks.length>240)sparks.splice(0,sparks.length-240);if(rings.length>20)rings.shift()}
+function callVisitor(){if(visitor){toast(paused?'재생 버튼을 눌러 손님을 만나보세요.':'손님은 지금 당신의 밤을 지나고 있어요.');return}visitor={age:0};visitorSeen=true;persist();if(paused)toast('손님이 기다리고 있어요. 재생 버튼을 눌러 만나보세요.');if(audioOn)[38,50,57,62].forEach((n,i)=>playNote(n,2,.035,i*.5,3.5))}
+function noteFor(t,i){const p=pointAt(t,t.notes[i]);const scale=palettes[t.color];return scale[clamp(Math.floor((1-p.y/H)*scale.length),0,scale.length-1)]}
+function initAudio(){
+ const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)throw new Error('unsupported');audio=new AudioContext();
+ master=audio.createGain();master.gain.value=.7;compressor=audio.createDynamicsCompressor();compressor.threshold.value=-18;compressor.ratio.value=8;compressor.connect(master);master.connect(audio.destination);
+ delay=audio.createDelay(2);delay.delayTime.value=.43;feedback=audio.createGain();feedback.gain.value=.26;wet=audio.createGain();wet.gain.value=.2;delay.connect(feedback);feedback.connect(delay);delay.connect(wet);wet.connect(compressor);
+ reverb=audio.createConvolver();const b=audio.createBuffer(2,audio.sampleRate*2.4,audio.sampleRate),r=rng(8172);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<d.length;i++)d[i]=(r()*2-1)*Math.pow(1-i/d.length,3)*.36}reverb.buffer=b;const rg=audio.createGain();rg.gain.value=.22;reverb.connect(rg);rg.connect(compressor);
+}
+function playNote(midi,color,volume=.065,offset=0,duration=1.8){
+ if(!audioOn||!audio||audio.state!=='running'||document.hidden||paused||$('guide').open)return;
+ const now=audio.currentTime;if(!offset&&now-lastNote<.055)return;if(!offset)lastNote=now;
+ const at=now+offset,frequency=440*Math.pow(2,(midi-69)/12),gain=audio.createGain(),pan=audio.createStereoPanner();pan.pan.value=clamp((midi-66)/23,-.7,.7);gain.gain.setValueAtTime(0,at);gain.gain.linearRampToValueAtTime(volume,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+duration);gain.connect(pan);pan.connect(compressor);pan.connect(delay);pan.connect(reverb);
+ const voices=color===1?[1,2]:color===2?[1,1.003]:[1,3];let remaining=voices.length;
+ for(let i=0;i<voices.length;i++){const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=frequency*voices[i];g.gain.value=i===0?1:color===2?.32:.13;o.connect(g);g.connect(gain);o.start(at);o.stop(at+duration+.05);o.onended=()=>{o.disconnect();g.disconnect();if(--remaining===0){gain.disconnect();pan.disconnect()}}}
+}
+async function toggleAudio(){
+ try{if(!audio)initAudio();await audio.resume();audioOn=!audioOn;master.gain.cancelScheduledValues(audio.currentTime);master.gain.setTargetAtTime(audioOn?.7:0,audio.currentTime,.08);$('sound').setAttribute('aria-pressed',String(audioOn));$('sound').setAttribute('aria-label',audioOn?'소리 끄기':'소리 켜기');$('sound').title=(audioOn?'소리 끄기':'소리 켜기')+' · M';$('sound').querySelector('use').setAttribute('href',audioOn?'#i-sound':'#i-mute');$('sound').querySelector('span').textContent=audioOn?'소리 켜짐':'소리 켜기';if(audioOn){playNote(69,selected,.06);toast(paused?'밤을 다시 흐르게 하면 음악도 시작돼요.':'빛이 별을 지나는 소리에 귀를 기울여보세요.')}}catch{toast('이 브라우저에서는 소리를 시작할 수 없어요. Edge 또는 Chrome으로 열어보세요.')}
+}
+function drawStar(x,y,size,color,alpha=1){ctx.strokeStyle=rgba(color,alpha);ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(x-size,y);ctx.lineTo(x+size,y);ctx.moveTo(x,y-size);ctx.lineTo(x,y+size);ctx.stroke();ctx.fillStyle=rgba('#f3f5e2',alpha);ctx.beginPath();ctx.arc(x,y,Math.max(.8,size*.18),0,TAU);ctx.fill()}
+function pathLine(t){ctx.beginPath();for(let i=0;i<t.points.length;i++){const p=wobble({x:t.points[i][0]*W,y:t.points[i][1]*H},t,i/(t.points.length-1));i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)}}
+function drawThread(t,dt){
+ const color=colors[t.color];t.travel+=dt*(.045+35/t.length);const cycle=(t.travel%2),f=cycle<=1?cycle:2-cycle;const idx=Math.round(f*(t.notes.length-1));
+ if(idx!==t.prevNote){t.prevNote=idx;t.glows[idx]=1;if(dt>0&&notesThisFrame<3){playNote(noteFor(t,idx),t.color);notesThisFrame++}}
+ pathLine(t);ctx.lineWidth=5;ctx.strokeStyle=rgba(color,.035);ctx.stroke();ctx.lineWidth=1;ctx.strokeStyle=rgba(color,.28);ctx.stroke();
+ // The moving silk glows brightest just behind each travelling light.
+ ctx.beginPath();for(let j=0;j<=18;j++){const q=clamp(f+(cycle<=1?-1:1)*j*.0035,0,1),p=wobble(pointAt(t,q),t,q);j?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)}ctx.lineWidth=1.6;ctx.strokeStyle=rgba(color,.65);ctx.stroke();
+ for(let i=0;i<t.notes.length;i++){const q=t.notes[i],p=wobble(pointAt(t,q),t,q);t.glows[i]=Math.max(0,t.glows[i]-dt*.9);const glow=t.glows[i];if(glow>.02){const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,15+glow*10);g.addColorStop(0,rgba(color,glow*.23));g.addColorStop(1,rgba(color,0));ctx.fillStyle=g;ctx.fillRect(p.x-26,p.y-26,52,52)}if(i===0||i===t.notes.length-1||i%3===0)drawStar(p.x,p.y,3+glow*3,color,.55+glow*.4);else{ctx.fillStyle=rgba(color,.5+glow*.5);ctx.beginPath();ctx.arc(p.x,p.y,1.4+glow,0,TAU);ctx.fill()}}
+ const p=wobble(pointAt(t,f),t,f);ctx.shadowBlur=15;ctx.shadowColor=color;ctx.fillStyle='#f5f2d8';ctx.beginPath();ctx.arc(p.x,p.y,2.4,0,TAU);ctx.fill();ctx.shadowBlur=0;
+}
+function drawVisitor(dt){
+ if(!visitor)return;visitor.age+=dt;const u=visitor.age/28;if(u>1){visitor=null;return}
+ const size=Math.min(W/1300,.9),x=-260+(W+520)*u,y=H*.43+Math.sin(u*TAU)*H*.06,opacity=Math.sin(Math.PI*u)*.65;
+ ctx.save();ctx.translate(x,y);ctx.scale(size,size);ctx.rotate(Math.sin(time*.5)*.035);ctx.globalAlpha=opacity;
+ const tail=Math.sin(time*1.3)*10;
+ ctx.beginPath();ctx.moveTo(183,-10);ctx.bezierCurveTo(178,-65,112,-90,30,-77);ctx.bezierCurveTo(-47,-68,-93,-22,-146,-13);ctx.bezierCurveTo(-164,-30,-183,-44+tail,-220,-40+tail);ctx.quadraticCurveTo(-198,-7,-177,0);ctx.quadraticCurveTo(-205,14,-212,47+tail);ctx.quadraticCurveTo(-170,42,-144,13);ctx.bezierCurveTo(-81,27,-58,65,35,58);ctx.bezierCurveTo(87,60,151,38,183,-10);ctx.closePath();
+ const g=ctx.createLinearGradient(0,-80,0,65);g.addColorStop(0,'#81b5b124');g.addColorStop(.65,'#699da02b');g.addColorStop(1,'#bed1c109');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#b5d9cf66';ctx.lineWidth=1;ctx.stroke();
+ ctx.beginPath();ctx.moveTo(65,33);ctx.bezierCurveTo(56,68,28,91,-10,100);ctx.quadraticCurveTo(1,62,20,43);ctx.strokeStyle='#b5d9cf5c';ctx.stroke();
+ for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(149-i*9,14+i*3);ctx.quadraticCurveTo(95-i*7,67,38-i*7,45);ctx.strokeStyle='#b5d9cf22';ctx.stroke()}
+ ctx.beginPath();ctx.moveTo(175,-4);ctx.quadraticCurveTo(152,6,117,5);ctx.strokeStyle='#c4ded95c';ctx.stroke();drawStar(137,-20,3,'#f3e2b2',.95);
+ const r=rng(77);let prev=null;for(let i=0;i<22;i++){const p={x:-95+r()*222,y:-44+r()*75};if(prev&&i%3){ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#9ccdc529';ctx.stroke()}drawStar(p.x,p.y,1.7,'#b6d8ce',.5);prev=p}
+ ctx.restore();
+}
+function render(dt){
+ notesThisFrame=0;ctx.clearRect(0,0,W,H);ctx.drawImage(bg,0,0,W,H);
+ for(const s of stars){const a=s.a*(.72+Math.sin(time*.6+s.p)*.28);ctx.fillStyle=rgba('#b3cbc3',a);ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,TAU);ctx.fill()}
+ for(const d of dust){const x=(d.x+Math.sin(time*.06+d.p)*30+W)%W,y=(d.y-time*d.s*1.8%H+H)%H;ctx.fillStyle=rgba('#c1c7a6',.12+Math.sin(time*.5+d.p)*.08);ctx.beginPath();ctx.arc(x,y,d.r,0,TAU);ctx.fill()}
+ drawVisitor(dt);
+ for(const t of threads)drawThread(t,dt);
+ if(drawing&&drawing.length>1){ctx.lineWidth=1.5;ctx.strokeStyle=rgba(colors[selected],.8);ctx.shadowColor=colors[selected];ctx.shadowBlur=8;ctx.beginPath();drawing.forEach((p,i)=>i?ctx.lineTo(p[0]*W,p[1]*H):ctx.moveTo(p[0]*W,p[1]*H));ctx.stroke();ctx.shadowBlur=0;const p=drawing.at(-1);drawStar(p[0]*W,p[1]*H,7,colors[selected])}
+ for(let i=rings.length-1;i>=0;i--){const r=rings[i];r.age+=dt;if(r.age>1.8){rings.splice(i,1);continue}ctx.strokeStyle=rgba(r.color,(1-r.age/1.8)*.3);ctx.lineWidth=1;ctx.beginPath();ctx.arc(r.x,r.y,5+r.age*34,0,TAU);ctx.stroke()}
+ for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.age+=dt;if(s.age>s.life){sparks.splice(i,1);continue}s.x+=s.vx*dt;s.y+=s.vy*dt;s.vx*=Math.exp(-dt*.8);s.vy*=Math.exp(-dt*.8);ctx.fillStyle=rgba(s.color,(1-s.age/s.life)*.8);ctx.beginPath();ctx.arc(s.x,s.y,1.2,0,TAU);ctx.fill()}
+ if(keyCursor&&document.activeElement===canvas){ctx.strokeStyle=rgba(colors[selected],.6);ctx.setLineDash([3,4]);ctx.beginPath();ctx.arc(keyCursor.x*W,keyCursor.y*H,17,0,TAU);ctx.stroke();ctx.setLineDash([]);drawStar(keyCursor.x*W,keyCursor.y*H,5,colors[selected])}
+ if(pointer.active&&!drawing&&!keyCursor){ctx.strokeStyle=rgba(colors[selected],.26);ctx.beginPath();ctx.arc(pointer.x,pointer.y,13,0,TAU);ctx.stroke();ctx.fillStyle=rgba(colors[selected],.6);ctx.beginPath();ctx.arc(pointer.x,pointer.y,2,0,TAU);ctx.fill()}
+}
+function frame(ms){const dt=Math.min((ms-last)/1000,.05);last=ms;const elapsed=paused||document.hidden||$('guide').open?0:dt;time+=elapsed;render(elapsed);requestAnimationFrame(frame)}
+function getPoint(e){const r=canvas.getBoundingClientRect();return[clamp((e.clientX-r.left)/r.width,0,1),clamp((e.clientY-r.top)/r.height,0,1)]}
+let activePointer=null;
+canvas.addEventListener('pointerdown',e=>{if(!e.isPrimary||e.button!==0||activePointer!==null)return;activePointer=e.pointerId;canvas.setPointerCapture(e.pointerId);canvas.focus({preventScroll:true});keyCursor=null;drawing=[getPoint(e)];pointer.active=false;e.preventDefault()});
+canvas.addEventListener('pointermove',e=>{const p=getPoint(e);pointer={x:p[0]*W,y:p[1]*H,active:e.pointerType!=='touch'};if(!drawing||e.pointerId!==activePointer)return;const prev=drawing.at(-1);if(drawing.length<1600&&Math.hypot((p[0]-prev[0])*W,(p[1]-prev[1])*H)>4)drawing.push(p)});
+canvas.addEventListener('pointerup',e=>{if(e.pointerId!==activePointer||!drawing)return;const pts=drawing;drawing=null;activePointer=null;if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);let len=0;for(let i=1;i<pts.length;i++)len+=Math.hypot((pts[i][0]-pts[i-1][0])*W,(pts[i][1]-pts[i-1][1])*H);if(len>30&&pts.length>2)addThread(pts);else{const p=getPoint(e);bloom(p[0]*W,p[1]*H,colors[selected]);playNote(palettes[selected][Math.floor((1-p[1])*7)],selected,.09)}pointer.active=e.pointerType!=='touch'});
+function cancelStroke(){drawing=null;activePointer=null}
+canvas.addEventListener('pointercancel',cancelStroke);canvas.addEventListener('lostpointercapture',cancelStroke);canvas.addEventListener('pointerleave',()=>pointer.active=false);
+document.querySelectorAll('[data-color]').forEach(b=>b.addEventListener('click',()=>selectColor(+b.dataset.color)));
+$('sound').addEventListener('click',toggleAudio);
+function undo(){if(!history.length)return;restore(history.pop());persist();toast('한 걸음 전의 밤으로 돌아왔어요.')}
+$('undo').addEventListener('click',undo);
+function togglePause(){paused=!paused;updateUI();if(audio&&master)master.gain.setTargetAtTime(paused?0:audioOn?.7:0,audio.currentTime,.12)}
+$('pause').addEventListener('click',togglePause);
+$('new').addEventListener('click',()=>{remember();seed=(Math.random()*0xffffffff)>>>0;threads=[];made=0;visitorSeen=false;visitor=null;sparks=[];rings=[];buildBackground();updateUI();persist();$('draw-hint').textContent='드래그해서 빛을 엮어보세요. 정해진 모양은 없어요.';toast('아무도 엮지 않은 밤이에요. 첫 실을 놓아보세요.')});
+$('guest-call').addEventListener('click',()=>{if(made>=3)callVisitor()});
+function openHelp(){if(!$('guide').open){$('guide').showModal();if(audio)master.gain.setTargetAtTime(0,audio.currentTime,.1)}}
+$('help').addEventListener('click',openHelp);$('close-help').addEventListener('click',()=>$('guide').close());$('begin').addEventListener('click',()=>$('guide').close());$('guide').addEventListener('click',e=>{if(e.target===$('guide')){const r=$('guide').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('guide').close()}});$('guide').addEventListener('close',()=>{if(audio)master.gain.setTargetAtTime(audioOn&&!paused?.7:0,audio.currentTime,.1)});
+document.addEventListener('keydown',e=>{
+ if(e.isComposing)return;if($('guide').open)return;
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();return}if(e.ctrlKey||e.metaKey||e.altKey)return;
+ const target=e.target;if(target instanceof HTMLInputElement||target instanceof HTMLTextAreaElement||target.isContentEditable)return;
+ if(e.key===' '&&target.tagName!=='BUTTON'){e.preventDefault();if(!e.repeat)togglePause();return}
+ if(['1','2','3'].includes(e.key)){selectColor(+e.key-1);return}if(e.key.toLowerCase()==='m'&&!e.repeat){toggleAudio();return}if(e.key.toLowerCase()==='h'){openHelp();return}
+ if(target===canvas){if(e.key.startsWith('Arrow')){e.preventDefault();keyCursor??={x:.55,y:.48};const d=.025;if(e.key==='ArrowLeft')keyCursor.x-=d;if(e.key==='ArrowRight')keyCursor.x+=d;if(e.key==='ArrowUp')keyCursor.y-=d;if(e.key==='ArrowDown')keyCursor.y+=d;keyCursor.x=clamp(keyCursor.x,.08,.92);keyCursor.y=clamp(keyCursor.y,.2,.76)}
+ if(e.key==='Enter'&&!e.repeat){e.preventDefault();keyCursor??={x:.55,y:.48};const pts=[];for(let i=0;i<=32;i++){const a=i/32*TAU,r=.05+Math.sin(a*2)*.025;pts.push([clamp(keyCursor.x+Math.cos(a)*r,.02,.98),clamp(keyCursor.y+Math.sin(a)*r*W/H,.12,.8)])}addThread(pts);keyCursor.x=clamp(keyCursor.x+.055,.08,.92)}
+ }
+});
+document.addEventListener('visibilitychange',()=>{last=performance.now();cancelStroke();if(audio)master.gain.setTargetAtTime(document.hidden||paused||$('guide').open?0:audioOn?.7:0,audio.currentTime,.1)});
+window.addEventListener('resize',resize);window.addEventListener('blur',cancelStroke);
+function savePicture(){
+ const border=36,footer=108,out=document.createElement('canvas');const scale=Math.min(2,2400/(W+border*2));out.width=Math.round((W+border*2)*scale);out.height=Math.round((H+border*2+footer)*scale);const c=out.getContext('2d');c.scale(scale,scale);c.fillStyle='#0b171e';c.fillRect(0,0,W+border*2,H+border*2+footer);c.drawImage(canvas,border,border,W,H);c.strokeStyle='#a3b9a633';c.strokeRect(border+.5,border+.5,W-1,H-1);
+ const r=rng(seed),adjectives=['고요가 내려앉은','달빛을 접어 만든','바람이 잠든','아무도 서두르지 않는','작은 기적이 머무는','먼 바다를 닮은'],nouns=['푸른 밤','별의 정원','빛의 편지','새벽의 조각','느린 우주'];const title=adjectives[Math.floor(r()*adjectives.length)]+' '+nouns[Math.floor(r()*nouns.length)];
+ c.fillStyle='#e0e4d4';c.font=`${W<600?17:22}px Georgia, Batang, serif`;c.fillText(title,border,H+border+42);c.fillStyle='#8ba6a0';c.font='10px Segoe UI, sans-serif';c.fillText(`밤의 직조실   /   THE NIGHT LOOM   ·   ${threads.length} 가닥의 빛`,border,H+border+69);c.textAlign='right';c.fillStyle='#c5b48e';c.font='10px Consolas, monospace';c.fillText(seed.toString(16).toUpperCase().padStart(8,'0'),W+border,H+border+69);
+ out.toBlob(blob=>{if(!blob){toast('이미지를 저장하지 못했어요. 다시 시도해 주세요.');return}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`밤의-직조실-${seed.toString(16)}.png`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);toast('당신의 밤을 한 장의 그림으로 간직했어요.')},'image/png');
+}
+$('save').addEventListener('click',savePicture);
+resize();let loaded=false;try{const saved=JSON.parse(localStorage.getItem(STORE));if(validState(saved)){restore(saved);loaded=true;setTimeout(()=>toast('지난번 당신이 엮던 밤을 다시 펼쳤어요.'),800)}}catch{storageOK=false}
+if(!loaded)seedThreads();updateUI();last=performance.now();requestAnimationFrame(frame);
+if(reduceMotion)$('draw-hint').textContent='움직임 줄이기 설정으로 밤을 멈췄어요. ▶ 버튼으로 시작할 수 있어요.';
+// Synchronous persistence also covers closing immediately after the last stroke.
+window.addEventListener('pagehide',()=>{try{localStorage.setItem(STORE,JSON.stringify(snapshot()))}catch{}});
+})();
+</script>
+</body>
+</html>
